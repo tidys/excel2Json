@@ -420,7 +420,10 @@ namespace DataConvert {
                         int selectIndex = this.comboBox.SelectedIndex;
                         string dir = this.listDir[selectIndex - 1];
                         string path = this.strAppPath + "\\" + dir + "\\json";
-                        System.Diagnostics.Process.Start("Explorer.exe", path);
+                        bool b = this.onShowExplorePath(path);
+                        if (!b) {
+                            System.Diagnostics.Process.Start("Explorer.exe", path);
+                        }
                         string logStr = "转换完成, 共计" + this.progressBar.Maximum.ToString() + "项!";
                         this.AddLog(logStr);
                         this.AddLog("json文件存放路径:" + path);
@@ -438,7 +441,10 @@ namespace DataConvert {
             int selectIndex = this.comboBox.SelectedIndex;
             string dir = this.listDir[selectIndex - 1];
             string path = this.strAppPath + "\\" + dir + "\\xlsx";
-            System.Diagnostics.Process.Start("Explorer.exe", path);
+            bool b = this.onShowExplorePath(path);
+            if (!b) {
+                System.Diagnostics.Process.Start("Explorer.exe", path);
+            }
 
         }
         // 执行bat文件
@@ -547,7 +553,7 @@ namespace DataConvert {
             ListViewItem item = this.listViewData.GetItemAt(e.X, e.Y);
             if (item != null) {
                 if (item.Index != this.preIndex) {
-                    
+
                 }
                 string excelFileName = item.SubItems[2].Text;
                 string jsonFileName = item.SubItems[5].Text;
