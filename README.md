@@ -64,7 +64,7 @@ desc:对该工作薄的一个简单描述说明,程序不会使用,可作为注�
 如果你喜欢,请告诉你的小伙伴,		
 如果不喜欢,请告诉我哪里不好(企鹅 774177933),	帮助我完善它		
 
-支付宝打赏:				
+QQ打赏:				
 ![enter image description here](http://7xq9nm.com1.z0.glb.clouddn.com/qqPay.png)
 
 
