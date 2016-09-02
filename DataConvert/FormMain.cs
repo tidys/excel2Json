@@ -26,11 +26,9 @@ namespace DataConvert {
         private delegate void DelegateAddLog(string s);
 
         public static FormMain frmMain = null;
-        public string strAppPath = Application.StartupPath;
-        public string strRootPath = Application.StartupPath;
         public string strTarPat = "";
         public string strDir = "";
-        public List<string> listDir = new List<string>();// 目录列表
+        public List<string> rootListDir = new List<string>();// 根目录列表
         public List<DataXlsx> listXlsx = new List<DataXlsx>();
 
         public WorkMode nWorkMode = WorkMode.None;
@@ -107,32 +105,35 @@ namespace DataConvert {
         }
 
         private void FormMain_Load(object sender, EventArgs e) {
+
             //更新标题: 工具的目录
-            this.Text += " - exe: " + this.strRootPath;
-            this.comboBox.Items.Add("-- 文件夹列表 --");
+            this.Text += " - exe: " + AppData.exePath;
+            this.rootDirComboBox.Items.Add("-- 文件夹列表 --");
+
+            AppData.init();
             //初始化文件夹下边的 数据
             this.InitDirectory();
-
+            this.initGenTypeCombox();
             // listDir 处理
-            if (this.listDir.Count > 0) {
-                for (int i = 0; i < this.listDir.Count; i++) {
-                    this.comboBox.Items.Add(this.listDir[i]);
+            if (this.rootListDir.Count > 0) {
+                for (int i = 0; i < this.rootListDir.Count; i++) {
+                    this.rootDirComboBox.Items.Add(this.rootListDir[i]);
                 }
                 // 加载上次保存的selectIndex
                 string indexStr = AppCfg.getItem(AppCfg.selectIndex);
                 int index = 0;
-                if (!indexStr.Equals("")) {
+                if (indexStr != null) {
                     index = int.Parse(indexStr);
                 }
-                if (index > this.comboBox.Items.Count - 1) {
+                if (index > this.rootDirComboBox.Items.Count - 1) {
                     index = 0;
                 }
-                this.comboBox.SelectedIndex = index;
+                this.rootDirComboBox.SelectedIndex = index;
             }
 
             // bat 文件配置
             string cfgBatName = AppCfg.getItem(AppCfg.batFilePath);
-            if (!cfgBatName.Equals("")) {
+            if (cfgBatName != null) {
                 this.batPathTextBox.Text = cfgBatName;
             }
             // 隐藏窗口的定时器
@@ -141,9 +142,33 @@ namespace DataConvert {
         }
 
 
-        #region 1
-        #endregion
+        #region  init 生成类型Combox
+        private void initGenTypeCombox() {
+            this.genTypeCombox.Items.Add("ALL");
+            this.genTypeCombox.Items.Add("服务端");
+            this.genTypeCombox.Items.Add("客户端");
+            EnumGenType type = AppData.getGenType();
+            if (type == EnumGenType.All) {
+                this.genTypeCombox.SelectedIndex = 0;
+            } else if (type == EnumGenType.Server) {
+                this.genTypeCombox.SelectedIndex = 1;
+            } else if (type == EnumGenType.Client) {
+                this.genTypeCombox.SelectedIndex = 2;
+            }
+            AppData.saveCfg();
+        }
 
+        private void genTypeSelectChange(object sender, EventArgs e) {
+            int index = this.genTypeCombox.SelectedIndex;
+            if (index == 0) {
+                AppData.setGenType(EnumGenType.All);
+            } else if (index == 1) {
+                AppData.setGenType(EnumGenType.Server);
+            } else if (index == 2) {
+                AppData.setGenType(EnumGenType.Client);
+            }
+            AppData.saveCfg();
+        }
 
         // 初始化文件夹目录
         private void InitDirectory() {
@@ -153,42 +178,34 @@ namespace DataConvert {
             if (rootDirSub.Length > 0) {
                 for (int i = 0; i < rootDirSub.Length; i++) {
                     string strName = rootDirSub[i].Name;
-                    this.listDir.Add(strName);
+                    this.rootListDir.Add(strName);
 
-                    // 验证文件夹下的目录结构是否为 xlsx txt json
                     string strFullName = rootDirSub[i].FullName;
-
-                    string strXlsxDir = strFullName + "\\xlsx";
-                    bool bXlsx = Directory.Exists(strXlsxDir);
-                    if (!bXlsx) {
-                        Directory.CreateDirectory(strXlsxDir);
-                        this.AddLog("[创建文件夹]" + strXlsxDir);
-                    }
-
-                    string strTxtDir = strFullName + "\\txt";
-                    bool bTxt = Directory.Exists(strTxtDir);
-                    if (!bTxt) {
-                        Directory.CreateDirectory(strTxtDir);
-                        this.AddLog("[创建文件夹]" + strTxtDir);
-                    }
-
-                    string strJsonDir = strFullName + "\\json";
-                    bool bJson = Directory.Exists(strJsonDir);
-                    if (!bJson) {
-                        Directory.CreateDirectory(strJsonDir);
-                        this.AddLog("[创建文件夹]" + strJsonDir);
-                    }
+                    this.genDirectory(strFullName + "\\xlsx");
+                    this.genDirectory(strFullName + "\\txt");
+                    this.genDirectory(strFullName + "\\json");
+                    this.genDirectory(strFullName + "\\json\\server");
+                    this.genDirectory(strFullName + "\\json\\client");
                 }
             } else {
                 this.AddLog("[警告] " + rootPath + " 下没有发现的文件夹!");
             }
         }
 
-        private void comboBox_SelectedIndexChanged(object sender, EventArgs e) {
+        // 没有指定的目录则生成相应的目录
+        private void genDirectory(string path) {
+            bool isExists = Directory.Exists(path);
+            if (!isExists) {
+                Directory.CreateDirectory(path);
+                this.AddLog("[创建文件夹] " + path);
+            }
+        }
+        #endregion
+        private void rootDirComboBoxSelectedChanged(object sender, EventArgs e) {
             this.listViewData.Items.Clear();
             this.listXlsx.Clear();
-            int index = this.comboBox.SelectedIndex;
-            AppCfg.addItem("selectIndex", index.ToString());
+            int index = this.rootDirComboBox.SelectedIndex;
+            AppCfg.setItem("selectIndex", index.ToString());
         }
 
         #region 载入数据
@@ -196,14 +213,14 @@ namespace DataConvert {
             this.SetButtonsEnable(false);
             this.listViewData.Items.Clear();//控件数据清空
             this.listXlsx.Clear();// xlsx arr清空
-            int nSelect = this.comboBox.SelectedIndex;
+            int nSelect = this.rootDirComboBox.SelectedIndex;
             if (nSelect == 0) {
                 MessageBox.Show("请选择需要载入的文件夹!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.SetButtonsEnable(true);
                 return;
             }
-            this.strDir = this.comboBox.SelectedItem.ToString();
-            string xlsxPath = this.strRootPath + "\\" + this.strDir + "\\xlsx";
+            this.strDir = this.rootDirComboBox.SelectedItem.ToString();
+            string xlsxPath = AppData.exePath + "\\" + this.strDir + "\\xlsx";
 
             // 先统计所有的目录
             List<string> allDir = new List<string>();
@@ -356,7 +373,7 @@ namespace DataConvert {
         #endregion
 
         public void SetButtonsEnable(bool b) {
-            this.comboBox.Enabled = b;
+            this.rootDirComboBox.Enabled = b;
             this.btnLoad.Enabled = b;
             this.btnSelectAll.Enabled = b;
             this.btnUnAll.Enabled = b;
@@ -417,9 +434,9 @@ namespace DataConvert {
                         //p.Close();
                         this.SetButtonsEnable(true);
 
-                        int selectIndex = this.comboBox.SelectedIndex;
-                        string dir = this.listDir[selectIndex - 1];
-                        string path = this.strAppPath + "\\" + dir + "\\json";
+                        int selectIndex = this.rootDirComboBox.SelectedIndex;
+                        string dir = this.rootListDir[selectIndex - 1];
+                        string path = AppData.exePath + "\\" + dir + "\\json";
                         bool b = this.onShowExplorePath(path);
                         if (!b) {
                             System.Diagnostics.Process.Start("Explorer.exe", path);
@@ -438,9 +455,9 @@ namespace DataConvert {
 
         private void OpenDirBtn_Click(object sender, EventArgs e) {
             // 打开excel的目录
-            int selectIndex = this.comboBox.SelectedIndex;
-            string dir = this.listDir[selectIndex - 1];
-            string path = this.strAppPath + "\\" + dir + "\\xlsx";
+            int selectIndex = this.rootDirComboBox.SelectedIndex;
+            string dir = this.rootListDir[selectIndex - 1];
+            string path = AppData.exePath + "\\" + dir + "\\xlsx";
             bool b = this.onShowExplorePath(path);
             if (!b) {
                 System.Diagnostics.Process.Start("Explorer.exe", path);
@@ -486,15 +503,16 @@ namespace DataConvert {
             fileDlg.Title = "请选择bat文件";
             fileDlg.Filter = "bat文件|*.bat|所有文件|*.*";
             string cfgBatPath = AppCfg.getItem("batPath");
-            if (cfgBatPath.Equals(""))// 目录为空
+
+            if (cfgBatPath == null)// 目录为空
             {
                 // 去json目录找
-                string path = this.strAppPath;
-                int selectIndex = this.comboBox.SelectedIndex;
+                string path = AppData.exePath;
+                int selectIndex = this.rootDirComboBox.SelectedIndex;
                 if (selectIndex > 0) {
                     // 选中了目录文件
-                    string dir = this.listDir[selectIndex - 1];
-                    path = this.strAppPath + "\\" + dir + "\\json";
+                    string dir = this.rootListDir[selectIndex - 1];
+                    path = AppData.exePath + "\\" + dir + "\\json";
                 }
 
                 fileDlg.InitialDirectory = path;
@@ -508,8 +526,8 @@ namespace DataConvert {
                 string filename = System.IO.Path.GetFileName(fileDlg.FileName);//得到文件名
                 string filepach = System.IO.Path.GetDirectoryName(fileDlg.FileName);//得到路径
                 this.batPathTextBox.Text = fileDlg.FileName;
-                AppCfg.addItem("batFile", fileDlg.FileName);
-                AppCfg.addItem("batPath", filepach);
+                AppCfg.setItem("batFile", fileDlg.FileName);
+                AppCfg.setItem("batPath", filepach);
             }
         }
 
@@ -572,7 +590,7 @@ namespace DataConvert {
             string path = this.listViewData.SelectedItems[0].SubItems[1].Text;
             string file = this.listViewData.SelectedItems[0].SubItems[2].Text;
             string json = this.listViewData.SelectedItems[0].SubItems[5].Text;
-            string xlsxPath = this.strRootPath + "\\" + this.strDir + "\\xlsx";
+            string xlsxPath = AppData.exePath + "\\" + this.strDir + "\\xlsx";
             var filePath = xlsxPath + path;
 
             bool b = this.onShowExplorePath(filePath);
@@ -594,7 +612,7 @@ namespace DataConvert {
             string path = this.listViewData.SelectedItems[0].SubItems[1].Text;
             string file = this.listViewData.SelectedItems[0].SubItems[2].Text;
             string json = this.listViewData.SelectedItems[0].SubItems[5].Text;
-            string xlsxPath = this.strRootPath + "\\" + this.strDir + "\\xlsx";
+            string xlsxPath = AppData.exePath + "\\" + this.strDir + "\\xlsx";
             var filePath = xlsxPath + path;
             System.Diagnostics.Process.Start("Explorer.exe", filePath + "\\" + file);
         }
@@ -603,7 +621,7 @@ namespace DataConvert {
             string path = this.listViewData.SelectedItems[0].SubItems[1].Text;
             string file = this.listViewData.SelectedItems[0].SubItems[2].Text;
             string json = this.listViewData.SelectedItems[0].SubItems[5].Text;
-            string jsonPath = this.strRootPath + "\\" + this.strDir + "\\json";
+            string jsonPath = AppData.exePath + "\\" + this.strDir + "\\json";
             var filePath = jsonPath + "\\" + json;
             //判断文件是否存在
             if (File.Exists(@filePath)) {
@@ -619,7 +637,7 @@ namespace DataConvert {
             string path = this.listViewData.SelectedItems[0].SubItems[1].Text;
             string file = this.listViewData.SelectedItems[0].SubItems[2].Text;
             string json = this.listViewData.SelectedItems[0].SubItems[5].Text;
-            string jsonPath = this.strRootPath + "\\" + this.strDir + "\\json";
+            string jsonPath = AppData.exePath + "\\" + this.strDir + "\\json";
             bool b = this.onShowExplorePath(jsonPath);
             if (!b) {
                 System.Diagnostics.Process.Start(jsonPath);
@@ -645,6 +663,7 @@ namespace DataConvert {
             }
         }
         #endregion
+
 
     }
 }

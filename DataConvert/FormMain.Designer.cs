@@ -31,17 +31,18 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.genTypeCombox = new System.Windows.Forms.ComboBox();
             this.OpenDirBtn = new System.Windows.Forms.Button();
             this.selectBatBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnConvert = new System.Windows.Forms.Button();
             this.batPathTextBox = new System.Windows.Forms.TextBox();
             this.batBtn = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnUnAll = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
-            this.btnConvert = new System.Windows.Forms.Button();
-            this.comboBox = new System.Windows.Forms.ComboBox();
+            this.rootDirComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
@@ -56,8 +57,8 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.打开ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.打开文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.打开JsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.打开JsonToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.打开JsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.listViewLog = new System.Windows.Forms.ListView();
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -65,8 +66,8 @@
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.hideWinTimer = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -78,17 +79,18 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.genTypeCombox);
             this.groupBox1.Controls.Add(this.OpenDirBtn);
             this.groupBox1.Controls.Add(this.selectBatBtn);
             this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.btnConvert);
             this.groupBox1.Controls.Add(this.batPathTextBox);
             this.groupBox1.Controls.Add(this.batBtn);
-            this.groupBox1.Controls.Add(this.pictureBox1);
             this.groupBox1.Controls.Add(this.btnLoad);
             this.groupBox1.Controls.Add(this.btnUnAll);
             this.groupBox1.Controls.Add(this.btnSelectAll);
-            this.groupBox1.Controls.Add(this.btnConvert);
-            this.groupBox1.Controls.Add(this.comboBox);
+            this.groupBox1.Controls.Add(this.rootDirComboBox);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
@@ -98,9 +100,31 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "数据类型";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(236, 17);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 12);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "生成类型:";
+            this.label3.Visible = false;
+            // 
+            // genTypeCombox
+            // 
+            this.genTypeCombox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.genTypeCombox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.genTypeCombox.FormattingEnabled = true;
+            this.genTypeCombox.Location = new System.Drawing.Point(238, 34);
+            this.genTypeCombox.Name = "genTypeCombox";
+            this.genTypeCombox.Size = new System.Drawing.Size(83, 20);
+            this.genTypeCombox.TabIndex = 12;
+            this.genTypeCombox.Visible = false;
+            this.genTypeCombox.SelectedIndexChanged += new System.EventHandler(this.genTypeSelectChange);
+            // 
             // OpenDirBtn
             // 
-            this.OpenDirBtn.Location = new System.Drawing.Point(639, 21);
+            this.OpenDirBtn.Location = new System.Drawing.Point(606, 20);
             this.OpenDirBtn.Name = "OpenDirBtn";
             this.OpenDirBtn.Size = new System.Drawing.Size(80, 28);
             this.OpenDirBtn.TabIndex = 11;
@@ -127,6 +151,16 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "bat路径:";
             // 
+            // btnConvert
+            // 
+            this.btnConvert.Location = new System.Drawing.Point(367, 20);
+            this.btnConvert.Name = "btnConvert";
+            this.btnConvert.Size = new System.Drawing.Size(52, 28);
+            this.btnConvert.TabIndex = 2;
+            this.btnConvert.Text = "生成";
+            this.btnConvert.UseVisualStyleBackColor = true;
+            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            // 
             // batPathTextBox
             // 
             this.batPathTextBox.Location = new System.Drawing.Point(91, 62);
@@ -144,20 +178,9 @@
             this.batBtn.UseVisualStyleBackColor = true;
             this.batBtn.Click += new System.EventHandler(this.batBtn_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.InitialImage = null;
-            this.pictureBox1.Location = new System.Drawing.Point(771, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(108, 116);
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Visible = false;
-            // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(226, 21);
+            this.btnLoad.Location = new System.Drawing.Point(138, 26);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(80, 28);
             this.btnLoad.TabIndex = 5;
@@ -178,7 +201,7 @@
             // btnSelectAll
             // 
             this.btnSelectAll.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSelectAll.Location = new System.Drawing.Point(334, 21);
+            this.btnSelectAll.Location = new System.Drawing.Point(520, 20);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(80, 28);
             this.btnSelectAll.TabIndex = 3;
@@ -186,35 +209,25 @@
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
-            // btnConvert
+            // rootDirComboBox
             // 
-            this.btnConvert.Location = new System.Drawing.Point(533, 21);
-            this.btnConvert.Name = "btnConvert";
-            this.btnConvert.Size = new System.Drawing.Size(80, 28);
-            this.btnConvert.TabIndex = 2;
-            this.btnConvert.Text = "生成";
-            this.btnConvert.UseVisualStyleBackColor = true;
-            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
-            // 
-            // comboBox
-            // 
-            this.comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox.FormattingEnabled = true;
-            this.comboBox.Location = new System.Drawing.Point(74, 26);
-            this.comboBox.Name = "comboBox";
-            this.comboBox.Size = new System.Drawing.Size(146, 20);
-            this.comboBox.TabIndex = 1;
-            this.comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.rootDirComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.rootDirComboBox.FormattingEnabled = true;
+            this.rootDirComboBox.Location = new System.Drawing.Point(15, 34);
+            this.rootDirComboBox.Name = "rootDirComboBox";
+            this.rootDirComboBox.Size = new System.Drawing.Size(117, 20);
+            this.rootDirComboBox.TabIndex = 1;
+            this.rootDirComboBox.SelectedIndexChanged += new System.EventHandler(this.rootDirComboBoxSelectedChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("黑体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(15, 29);
+            this.label1.Location = new System.Drawing.Point(12, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 14);
+            this.label1.Size = new System.Drawing.Size(91, 14);
             this.label1.TabIndex = 0;
-            this.label1.Text = "文件夹:";
+            this.label1.Text = "excel文件夹:";
             // 
             // progressBar
             // 
@@ -241,7 +254,7 @@
             // 
             this.splitContainer.Panel2.Controls.Add(this.groupBox4);
             this.splitContainer.Size = new System.Drawing.Size(879, 430);
-            this.splitContainer.SplitterDistance = 270;
+            this.splitContainer.SplitterDistance = 269;
             this.splitContainer.TabIndex = 7;
             // 
             // groupBox3
@@ -250,7 +263,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(879, 270);
+            this.groupBox3.Size = new System.Drawing.Size(879, 269);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "数据内容 (选中item按下space打开excel)";
@@ -271,7 +284,7 @@
             this.listViewData.GridLines = true;
             this.listViewData.Location = new System.Drawing.Point(3, 17);
             this.listViewData.Name = "listViewData";
-            this.listViewData.Size = new System.Drawing.Size(873, 250);
+            this.listViewData.Size = new System.Drawing.Size(873, 249);
             this.listViewData.TabIndex = 0;
             this.listViewData.UseCompatibleStateImageBehavior = false;
             this.listViewData.View = System.Windows.Forms.View.Details;
@@ -332,13 +345,6 @@
             this.打开文件ToolStripMenuItem.Text = "打开Excel文件";
             this.打开文件ToolStripMenuItem.Click += new System.EventHandler(this.ClickToolStripMenuItem_OpenExcelFile);
             // 
-            // 打开JsonToolStripMenuItem
-            // 
-            this.打开JsonToolStripMenuItem.Name = "打开JsonToolStripMenuItem";
-            this.打开JsonToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.打开JsonToolStripMenuItem.Text = "打开Json文件";
-            this.打开JsonToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_OpenJsonFile);
-            // 
             // 打开JsonToolStripMenuItem1
             // 
             this.打开JsonToolStripMenuItem1.Name = "打开JsonToolStripMenuItem1";
@@ -346,13 +352,20 @@
             this.打开JsonToolStripMenuItem1.Text = "打开Json文件夹";
             this.打开JsonToolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1_OpenJsonDir);
             // 
+            // 打开JsonToolStripMenuItem
+            // 
+            this.打开JsonToolStripMenuItem.Name = "打开JsonToolStripMenuItem";
+            this.打开JsonToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.打开JsonToolStripMenuItem.Text = "打开Json文件";
+            this.打开JsonToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_OpenJsonFile);
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.listViewLog);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(879, 156);
+            this.groupBox4.Size = new System.Drawing.Size(879, 157);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "提示信息";
@@ -367,7 +380,7 @@
             this.listViewLog.GridLines = true;
             this.listViewLog.Location = new System.Drawing.Point(3, 17);
             this.listViewLog.Name = "listViewLog";
-            this.listViewLog.Size = new System.Drawing.Size(873, 136);
+            this.listViewLog.Size = new System.Drawing.Size(873, 137);
             this.listViewLog.TabIndex = 0;
             this.listViewLog.UseCompatibleStateImageBehavior = false;
             this.listViewLog.View = System.Windows.Forms.View.Details;
@@ -413,7 +426,6 @@
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
@@ -429,7 +441,7 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnConvert;
-        private System.Windows.Forms.ComboBox comboBox;
+        private System.Windows.Forms.ComboBox rootDirComboBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnUnAll;
         private System.Windows.Forms.Button btnSelectAll;
@@ -449,7 +461,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.Timer timer;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button selectBatBtn;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox batPathTextBox;
@@ -462,6 +473,9 @@
         private System.Windows.Forms.ToolStripMenuItem 打开JsonToolStripMenuItem1;
         private System.Windows.Forms.Timer hideWinTimer;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox genTypeCombox;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 

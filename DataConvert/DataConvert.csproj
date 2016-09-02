@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppCfg.cs" />
+    <Compile Include="AppData.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
