@@ -41,7 +41,6 @@
             this.batBtn = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnUnAll = new System.Windows.Forms.Button();
-            this.btnSelectAll = new System.Windows.Forms.Button();
             this.rootDirComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
@@ -89,13 +88,12 @@
             this.groupBox1.Controls.Add(this.batBtn);
             this.groupBox1.Controls.Add(this.btnLoad);
             this.groupBox1.Controls.Add(this.btnUnAll);
-            this.groupBox1.Controls.Add(this.btnSelectAll);
             this.groupBox1.Controls.Add(this.rootDirComboBox);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(879, 101);
+            this.groupBox1.Size = new System.Drawing.Size(879, 98);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "数据类型";
@@ -108,18 +106,16 @@
             this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 13;
             this.label3.Text = "生成类型:";
-            this.label3.Visible = false;
             // 
             // genTypeCombox
             // 
             this.genTypeCombox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.genTypeCombox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.genTypeCombox.FormattingEnabled = true;
-            this.genTypeCombox.Location = new System.Drawing.Point(238, 34);
+            this.genTypeCombox.Location = new System.Drawing.Point(238, 31);
             this.genTypeCombox.Name = "genTypeCombox";
             this.genTypeCombox.Size = new System.Drawing.Size(83, 20);
             this.genTypeCombox.TabIndex = 12;
-            this.genTypeCombox.Visible = false;
             this.genTypeCombox.SelectedIndexChanged += new System.EventHandler(this.genTypeSelectChange);
             // 
             // OpenDirBtn
@@ -153,7 +149,7 @@
             // 
             // btnConvert
             // 
-            this.btnConvert.Location = new System.Drawing.Point(367, 20);
+            this.btnConvert.Location = new System.Drawing.Point(340, 20);
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.Size = new System.Drawing.Size(52, 28);
             this.btnConvert.TabIndex = 2;
@@ -190,24 +186,13 @@
             // 
             // btnUnAll
             // 
-            this.btnUnAll.Location = new System.Drawing.Point(434, 21);
+            this.btnUnAll.Location = new System.Drawing.Point(520, 20);
             this.btnUnAll.Name = "btnUnAll";
             this.btnUnAll.Size = new System.Drawing.Size(80, 28);
             this.btnUnAll.TabIndex = 4;
             this.btnUnAll.Text = "反选";
             this.btnUnAll.UseVisualStyleBackColor = true;
             this.btnUnAll.Click += new System.EventHandler(this.btnUnAll_Click);
-            // 
-            // btnSelectAll
-            // 
-            this.btnSelectAll.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSelectAll.Location = new System.Drawing.Point(520, 20);
-            this.btnSelectAll.Name = "btnSelectAll";
-            this.btnSelectAll.Size = new System.Drawing.Size(80, 28);
-            this.btnSelectAll.TabIndex = 3;
-            this.btnSelectAll.Text = "全选";
-            this.btnSelectAll.UseVisualStyleBackColor = true;
-            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
             // rootDirComboBox
             // 
@@ -241,7 +226,7 @@
             // splitContainer
             // 
             this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer.Location = new System.Drawing.Point(0, 101);
+            this.splitContainer.Location = new System.Drawing.Point(0, 98);
             this.splitContainer.Margin = new System.Windows.Forms.Padding(0);
             this.splitContainer.Name = "splitContainer";
             this.splitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -253,8 +238,8 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.groupBox4);
-            this.splitContainer.Size = new System.Drawing.Size(879, 430);
-            this.splitContainer.SplitterDistance = 269;
+            this.splitContainer.Size = new System.Drawing.Size(879, 433);
+            this.splitContainer.SplitterDistance = 270;
             this.splitContainer.TabIndex = 7;
             // 
             // groupBox3
@@ -263,7 +248,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(879, 269);
+            this.groupBox3.Size = new System.Drawing.Size(879, 270);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "数据内容 (选中item按下space打开excel)";
@@ -284,10 +269,12 @@
             this.listViewData.GridLines = true;
             this.listViewData.Location = new System.Drawing.Point(3, 17);
             this.listViewData.Name = "listViewData";
-            this.listViewData.Size = new System.Drawing.Size(873, 249);
+            this.listViewData.Size = new System.Drawing.Size(873, 250);
             this.listViewData.TabIndex = 0;
             this.listViewData.UseCompatibleStateImageBehavior = false;
             this.listViewData.View = System.Windows.Forms.View.Details;
+            this.listViewData.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ClickListViewColumn);
+            this.listViewData.SelectedIndexChanged += new System.EventHandler(this.listViewData_SelectedIndexChanged_1);
             this.listViewData.MouseMove += new System.Windows.Forms.MouseEventHandler(this.listView_MouseMove);
             this.listViewData.MouseUp += new System.Windows.Forms.MouseEventHandler(this.listViewData_MouseUp);
             // 
@@ -365,7 +352,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(879, 157);
+            this.groupBox4.Size = new System.Drawing.Size(879, 159);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "提示信息";
@@ -380,7 +367,7 @@
             this.listViewLog.GridLines = true;
             this.listViewLog.Location = new System.Drawing.Point(3, 17);
             this.listViewLog.Name = "listViewLog";
-            this.listViewLog.Size = new System.Drawing.Size(873, 137);
+            this.listViewLog.Size = new System.Drawing.Size(873, 139);
             this.listViewLog.TabIndex = 0;
             this.listViewLog.UseCompatibleStateImageBehavior = false;
             this.listViewLog.View = System.Windows.Forms.View.Details;
@@ -444,7 +431,6 @@
         private System.Windows.Forms.ComboBox rootDirComboBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnUnAll;
-        private System.Windows.Forms.Button btnSelectAll;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.SplitContainer splitContainer;

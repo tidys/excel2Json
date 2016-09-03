@@ -67,11 +67,22 @@ namespace DataConvert {
                         }
                         DataSheet ds = new DataSheet();
                         try {
-                            ds.nIndex = Convert.ToInt32(sheetIndex);
-                            ds.strName = sheetName.ToString().Trim();
-                            ds.strTxtFile = outputName.ToString().Trim() + ".txt";
-                            ds.strJsonFile = outputName.ToString().Trim() + ".json";
-                            this.listSheet.Add(ds);
+                            // 检测是否存在该sheet
+                            bool isExistSheet = false;
+                            foreach (ExcelWorksheet sheet in package.Workbook.Worksheets) {
+                                if (sheet.Name.Equals(sheetName)) {
+                                    isExistSheet = true;
+                                }
+                            }
+                            if (isExistSheet) {
+                                ds.nIndex = Convert.ToInt32(sheetIndex);
+                                ds.strName = sheetName.ToString().Trim();
+                                ds.strTxtFile = outputName.ToString().Trim() + ".txt";
+                                ds.strJsonFile = outputName.ToString().Trim() + ".json";
+                                this.listSheet.Add(ds);
+                            } else {
+                                FormMain.frmMain.AddLog("[警告] 文件: " + this.strName + " 中不存在工作薄: " + sheetName);
+                            }
                             row++;
                         } catch (Exception) {
                             string s = "错误: 文件[" + this.strName + "] 工作表[" + ws.Name + "] 单元格[" + row.ToString() + ",3] 数据不是整数";

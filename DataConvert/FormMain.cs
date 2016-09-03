@@ -138,7 +138,7 @@ namespace DataConvert {
             }
             // 隐藏窗口的定时器
             this.hideWinTimer.Start();
-            this.Top = 0;
+            //this.Top = 0;
         }
 
 
@@ -210,9 +210,11 @@ namespace DataConvert {
 
         #region 载入数据
         private void btnLoad_Click(object sender, EventArgs e) {
-            this.SetButtonsEnable(false);
+            this.listViewLog.Items.Clear();
             this.listViewData.Items.Clear();//控件数据清空
             this.listXlsx.Clear();// xlsx arr清空
+            this.SetButtonsEnable(false);
+
             int nSelect = this.rootDirComboBox.SelectedIndex;
             if (nSelect == 0) {
                 MessageBox.Show("请选择需要载入的文件夹!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -301,6 +303,7 @@ namespace DataConvert {
 
         #region 全选
         private void btnSelectAll_Click(object sender, EventArgs e) {
+            this.isSelectAllItem = true;
             for (int i = 0; i < this.listViewData.Items.Count; i++) {
                 ListViewItem lvi = this.listViewData.Items[i];
                 lvi.Checked = true;
@@ -310,6 +313,7 @@ namespace DataConvert {
 
         #region 反选
         private void btnUnAll_Click(object sender, EventArgs e) {
+            this.isSelectAllItem = false;
             for (int i = 0; i < this.listViewData.Items.Count; i++) {
                 ListViewItem lvi = this.listViewData.Items[i];
                 lvi.Checked = !lvi.Checked;
@@ -375,7 +379,6 @@ namespace DataConvert {
         public void SetButtonsEnable(bool b) {
             this.rootDirComboBox.Enabled = b;
             this.btnLoad.Enabled = b;
-            this.btnSelectAll.Enabled = b;
             this.btnUnAll.Enabled = b;
             this.btnConvert.Enabled = b;
         }
@@ -406,7 +409,7 @@ namespace DataConvert {
                             }
                         }
                         string str = "载入完成, 共计" + this.listViewData.Items.Count.ToString() + "项!";
-                        this.listViewLog.Items.Clear();
+                        //this.listViewLog.Items.Clear();
                         this.AddLog(str);
                         this.progressBar.Value = 0;
                         this.btnSelectAll_Click(null, null);//载入完成后默认全部选择
@@ -663,6 +666,22 @@ namespace DataConvert {
             }
         }
         #endregion
+
+        private void listViewData_SelectedIndexChanged_1(object sender, EventArgs e) {
+
+        }
+
+        // 点击标头
+        private bool isSelectAllItem = true;
+        private void ClickListViewColumn(object sender, ColumnClickEventArgs e) {
+            if (e.Column == 0) {
+                this.isSelectAllItem = !this.isSelectAllItem;
+                for (int i = 0; i < this.listViewData.Items.Count; i++) {
+                    ListViewItem lvi = this.listViewData.Items[i];
+                    lvi.Checked = this.isSelectAllItem;
+                }
+            }
+        }
 
 
     }
