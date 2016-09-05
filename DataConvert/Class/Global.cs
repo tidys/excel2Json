@@ -99,103 +99,104 @@ namespace DataConvert {
             }
         }
 
+        // 初始化表格的标题
+        private void initSheetTitle(ExcelWorksheet ws,
+            ref List<string> typeList,
+            ref List<string> serverList,
+            ref List<string> clientList
+            ) {
+            int typeRow = this.getExcelKeyRow(ws, ExcelKeyWord.type);
+            this.fullListData(ws, typeRow, ref typeList);
+
+            int serverRow = this.getExcelKeyRow(ws, ExcelKeyWord.server); ;
+            this.fullListData(ws, serverRow, ref serverList);
+
+            int clientRow = this.getExcelKeyRow(ws, ExcelKeyWord.client); ;
+            this.fullListData(ws, clientRow, ref clientList);
+
+
+
+
+        }
+        private void fullListData(ExcelWorksheet ws, int row, ref List<string> list) {
+            for (int i = 2; i < int.MaxValue; i++) {
+                var value = ws.Cells[row, i].Value;
+                if (value != null) {
+                    string key = value.ToString().Trim();
+                    list.Add(key);
+                }
+
+            }
+        }
+        private int getExcelKeyRow(ExcelWorksheet ws, string key) {
+            for (int i = 1; i < int.MaxValue; i++) {
+                var firstKey = ws.Cells[i, 1].Value;
+                if (firstKey != null) {
+                    string rowKey = firstKey.ToString().Trim();
+                    if (rowKey.Equals(key)) {
+                        return i;
+                    }
+                }
+            }
+            return 0;
+        }
+
         public void ConvertSheet() {
             try {
                 using (ExcelPackage package = new ExcelPackage(new FileInfo(this.strFullName))) {
                     foreach (DataSheet sheet in this.listSheet) {
                         try {
+                            List<string> listType = new List<string>();// 类型行
+                            List<string> listServer = new List<string>();// 服务端字段行
+                            List<string> listClient = new List<string>();// 客户端行
+
                             List<string> listItemEn = new List<string>();
                             List<string> listItemChs = new List<string>();
-                            List<string> listData = new List<string>();
-                            var ws = package.Workbook.Worksheets[sheet.strName];
+                            List<List<string>> listData = new List<List<string>>();
+
+                            ExcelWorksheet ws = package.Workbook.Worksheets[sheet.strName];
                             if (ws == null) {
                                 FormMain.frmMain.AddLog("错误: 文件[" + this.strName + "] 工作表[" + sheet.strName + "] 不存在");
                                 continue;
                             }
-                            int col = 1; //列
-                            //读取列标题 第一行为英文 第二行为中文
-                            bool bNull = false;
-                            while (true) {
-                                var v1 = ws.Cells[1, col].Value; //英文
-                                var v2 = ws.Cells[2, col].Value; //中文
-                                if ((v1 == null) && (v2 == null)) //标题结束
-                                    break;
-                                if (v1 == null) {
-                                    FormMain.frmMain.AddLog("错误: 文件[" + this.strName + "] 工作表[" + sheet.strName + "] 单元格[1, " + col.ToString() + "] 内容为空");
-                                    break;
-                                }
-                                if (v2 == null) {
-                                    FormMain.frmMain.AddLog("错误: 文件[" + this.strName + "] 工作表[" + sheet.strName + "] 单元格[2, " + col.ToString() + "] 内容为空");
-                                    break;
-                                }
-                                string s1 = v1.ToString().Trim();
-                                string s2 = v2.ToString().Trim();
-                                if (s1.Length == 0) {
-                                    bNull = true;
-                                    FormMain.frmMain.AddLog("错误: 文件[" + this.strName + "] 工作表[" + sheet.strName + "] 单元格[1, " + col.ToString() + "] 内容为空");
-                                    break;
-                                }
-                                if (s2.Length == 0) {
-                                    bNull = true;
-                                    FormMain.frmMain.AddLog("错误: 文件[" + this.strName + "] 工作表[" + sheet.strName + "] 单元格[2, " + col.ToString() + "] 内容为空");
-                                    break;
-                                }
-                                col++;
-                                listItemEn.Add(s1);
-                                listItemChs.Add(s2);
-                            }
-                            if (bNull)
-                                continue;
-                            col--;
-                            Console.WriteLine(ws.Name + "列数[" + col.ToString() + "]");
-                            if (col <= 0) {
-                                FormMain.frmMain.AddLog("错误: 文件[" + this.strName + "] 工作表[" + sheet.strName + "] 标题个数为0");
-                                continue;
-                            }
-                            int row = 3; //第三行开始为数据
-                            while (true) {
-                                List<string> listLine = new List<string>();
-                                int nError = 0;
-                                for (int i = 1; i <= col; i++) {
-                                    var cell = ws.Cells[row, i];
-                                    var data = cell.Value;
-                                    if (data == null) {
-                                        listLine.Add("");
-                                        nError++;
-                                    } else {
-                                        string s = data.ToString().Trim();
-                                        if (s.Length == 0) {
-                                            listLine.Add("");
-                                            nError++;
-                                        } else {
-                                            listLine.Add(s);
-                                            /*
-                                            int style = cell.StyleID;
-                                            if (style == 1)// 数值类型
-                                            {
-                                                listData.Add(data);
-                                            }
-                                            else
-                                            {
 
+                            this.initSheetTitle(ws, ref listType, ref listServer, ref listClient);
+
+                            int beganRow = this.getExcelKeyRow(ws, ExcelKeyWord.began);// 开始row
+                            int endRow = this.getExcelKeyRow(ws, ExcelKeyWord.end);// 结束row
+                            if (endRow == 0) {// 没有end关键字
+
+                            } else {// 有end关键字
+                                for (int row = beganRow; row <= endRow; row++) {
+                                    while (true) {
+                                        List<string> listLine = new List<string>();
+
+                                        for (int i = 1; i <= int.MaxValue; i++) {
+                                            var data = ws.Cells[row, i].Value;
+                                            if (data == null) {
+                                                listLine.Add("");
+                                            } else {
+                                                string s = data.ToString().Trim();
+                                                if (s.Length == 0) {
+                                                    listLine.Add("");
+                                                } else {
+                                                    listLine.Add(s);
+                                                }
                                             }
-                                            */
                                         }
+                                        listData.Add(listLine);
                                     }
                                 }
-                                if (nError == col) //空行 为数据结束
-                                    break;
-                                for (int i = 0; i < col; i++) {
-                                    listData.Add(listLine[i]);
-                                }
-                                row++;
+
                             }
+
+
                             //检查数据
                             int n = listData.Count / listItemEn.Count;
                             bool bCheckFailed = false;
                             for (int i = 0; i < n; i++) {
                                 for (int j = 0; j < listItemEn.Count; j++) {
-                                    string s = listData[i * listItemEn.Count + j];
+                                    string s = "";// listData[i * listItemEn.Count + j];
                                     if (s == "") {
                                         if (listItemEn[j] == "*") {
                                             continue;
@@ -207,12 +208,13 @@ namespace DataConvert {
 
                                     }
                                 }
+
                             }
                             if (bCheckFailed == false) {
                                 //保存为TXT
-                                if (this.SaveToTxt(listItemEn, listItemChs, listData, sheet.strTxtFile) == false) {
-                                    FormMain.frmMain.AddLog("错误: 文件[" + this.strName + "] 工作表[" + sheet.strName + "] 转换为[" + sheet.strTxtFile + "] 保存失败");
-                                }
+                                //if (this.SaveToTxt(listItemEn, listItemChs, listData, sheet.strTxtFile) == false) {
+                                //    FormMain.frmMain.AddLog("错误: 文件[" + this.strName + "] 工作表[" + sheet.strName + "] 转换为[" + sheet.strTxtFile + "] 保存失败");
+                                //}
                                 //保存为JSON
                                 if (this.SaveToJson(listItemEn, listData, sheet.strJsonFile) == false) {
                                     FormMain.frmMain.AddLog("错误: 文件[" + this.strName + "] 工作表[" + sheet.strName + "] 转换为[" + sheet.strJsonFile + "] 保存失败");
@@ -225,9 +227,10 @@ namespace DataConvert {
                         }
                     }
                 }
-            } catch (Exception ex) {
+            } catch (Exception) {
                 FormMain.frmMain.AddLog("错误: 文件[" + this.strName + "] 打开失败");
             }
+
         }
 
         public bool SaveToTxt(List<string> listItemEn, List<string> listItemChs, List<string> listData, string strFile) {
@@ -282,7 +285,7 @@ namespace DataConvert {
                 return false;
             }
         }
-        public bool SaveToJson(List<string> listItem, List<string> listData, string strFile) {
+        public bool SaveToJson(List<string> listItem, List<List<string>> listData, string strFile) {
             try {
                 string strFullFile = AppData.exePath + "\\" + FormMain.frmMain.strDir + "\\json\\" + strFile;
                 Console.WriteLine(strFullFile);
@@ -301,7 +304,7 @@ namespace DataConvert {
                     int count = 0;
                     for (int j = 0; j < listItem.Count; j++) {
                         string strItem = listItem[j];
-                        string strData = listData[i * listItem.Count + j];
+                        string strData = "";//listData[i * listItem.Count + j];
                         if (strItem == "*") continue;
                         if (strData.Length == 0)
                             return false;

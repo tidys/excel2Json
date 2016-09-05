@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataConvert.Class {
+namespace DataConvert {
     class ExcelKeyWord {
 
         public static string type = "type";
