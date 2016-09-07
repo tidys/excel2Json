@@ -85,7 +85,7 @@ namespace DataConvert {
                                 this.openLocalDirBtn_Click(null, null);
                                 break;
                             }
-                    }                    
+                    }
                     this.isPressHotKey = false;
                     break;
             }
@@ -120,8 +120,8 @@ namespace DataConvert {
                 if (pos < 0) {
                     this.addLog("不是合法的网址" + url);
                 } else {
-                    string dir = AppCfg.getItem(AppCfg.localImgDir);
-                    if (dir != null) {
+                    string dir = this.localDirTextBox.Text;
+                    if (dir.Length > 0) {
                         string[] urlArray = url.Split('/');
                         string fileName = urlArray[urlArray.Length - 1];
                         string[] fileArr = fileName.Split('.');
