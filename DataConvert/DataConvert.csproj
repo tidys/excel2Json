@@ -87,6 +87,12 @@
     <Compile Include="Class\AppCfg.cs" />
     <Compile Include="Class\AppData.cs" />
     <Compile Include="Class\ExcelKeyWord.cs" />
+    <Compile Include="DownLoadImg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DownLoadImg.Designer.cs">
+      <DependentUpon>DownLoadImg.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +103,9 @@
     <Compile Include="Class\IniFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DownLoadImg.resx">
+      <DependentUpon>DownLoadImg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
       <SubType>Designer</SubType>

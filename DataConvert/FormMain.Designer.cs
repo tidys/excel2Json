@@ -101,30 +101,32 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(236, 17);
+            this.label3.Location = new System.Drawing.Point(789, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 13;
             this.label3.Text = "生成类型:";
+            this.label3.Visible = false;
             // 
             // genTypeCombox
             // 
             this.genTypeCombox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.genTypeCombox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.genTypeCombox.FormattingEnabled = true;
-            this.genTypeCombox.Location = new System.Drawing.Point(238, 31);
+            this.genTypeCombox.Location = new System.Drawing.Point(787, 34);
             this.genTypeCombox.Name = "genTypeCombox";
             this.genTypeCombox.Size = new System.Drawing.Size(83, 20);
             this.genTypeCombox.TabIndex = 12;
+            this.genTypeCombox.Visible = false;
             this.genTypeCombox.SelectedIndexChanged += new System.EventHandler(this.genTypeSelectChange);
             // 
             // OpenDirBtn
             // 
-            this.OpenDirBtn.Location = new System.Drawing.Point(606, 20);
+            this.OpenDirBtn.Location = new System.Drawing.Point(554, 16);
             this.OpenDirBtn.Name = "OpenDirBtn";
-            this.OpenDirBtn.Size = new System.Drawing.Size(80, 28);
+            this.OpenDirBtn.Size = new System.Drawing.Size(93, 28);
             this.OpenDirBtn.TabIndex = 11;
-            this.OpenDirBtn.Text = "打开目录";
+            this.OpenDirBtn.Text = "打开xlsx目录";
             this.OpenDirBtn.UseVisualStyleBackColor = true;
             this.OpenDirBtn.Click += new System.EventHandler(this.OpenDirBtn_Click);
             // 
@@ -141,7 +143,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(32, 66);
+            this.label2.Location = new System.Drawing.Point(19, 67);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 9;
@@ -149,9 +151,9 @@
             // 
             // btnConvert
             // 
-            this.btnConvert.Location = new System.Drawing.Point(340, 20);
+            this.btnConvert.Location = new System.Drawing.Point(357, 15);
             this.btnConvert.Name = "btnConvert";
-            this.btnConvert.Size = new System.Drawing.Size(52, 28);
+            this.btnConvert.Size = new System.Drawing.Size(74, 28);
             this.btnConvert.TabIndex = 2;
             this.btnConvert.Text = "生成";
             this.btnConvert.UseVisualStyleBackColor = true;
@@ -176,7 +178,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(138, 26);
+            this.btnLoad.Location = new System.Drawing.Point(233, 15);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(80, 28);
             this.btnLoad.TabIndex = 5;
@@ -186,7 +188,7 @@
             // 
             // btnUnAll
             // 
-            this.btnUnAll.Location = new System.Drawing.Point(520, 20);
+            this.btnUnAll.Location = new System.Drawing.Point(451, 16);
             this.btnUnAll.Name = "btnUnAll";
             this.btnUnAll.Size = new System.Drawing.Size(80, 28);
             this.btnUnAll.TabIndex = 4;
@@ -198,7 +200,7 @@
             // 
             this.rootDirComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.rootDirComboBox.FormattingEnabled = true;
-            this.rootDirComboBox.Location = new System.Drawing.Point(15, 34);
+            this.rootDirComboBox.Location = new System.Drawing.Point(106, 20);
             this.rootDirComboBox.Name = "rootDirComboBox";
             this.rootDirComboBox.Size = new System.Drawing.Size(117, 20);
             this.rootDirComboBox.TabIndex = 1;
@@ -208,7 +210,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("黑体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(12, 17);
+            this.label1.Location = new System.Drawing.Point(12, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(91, 14);
             this.label1.TabIndex = 0;

@@ -17,6 +17,8 @@ namespace DataConvert {
         public static string selectIndex = "selectIndex";
         public static string batFilePath = "batFile";
         public static string genType = "genType";// 生成的类型
+        public static string localImgDir = "localImgDir";// 本地目录
+
 
 
         public static Configuration cfg = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);

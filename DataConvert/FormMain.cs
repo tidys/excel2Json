@@ -184,8 +184,8 @@ namespace DataConvert {
                     this.genDirectory(strFullName + "\\xlsx");
                     this.genDirectory(strFullName + "\\txt");
                     this.genDirectory(strFullName + "\\json");
-                    this.genDirectory(strFullName + "\\json\\server");
-                    this.genDirectory(strFullName + "\\json\\client");
+                    //this.genDirectory(strFullName + "\\json\\server");
+                    //this.genDirectory(strFullName + "\\json\\client");
                 }
             } else {
                 this.AddLog("[警告] " + rootPath + " 下没有发现的文件夹!");
@@ -486,6 +486,16 @@ namespace DataConvert {
                 } else {
                     this.AddLog("[警告] listView 没有 item 被选择!");
                 }
+            } else if (keyData == Keys.F1) {
+                if (DownLoadImg.isShow == false) {
+                    this.Top = 0;
+                    Form win = new DownLoadImg();
+                    win.Show();
+                } else {
+                    if (DownLoadImg.instance!= null) {
+                        DownLoadImg.instance.Activate();
+                    }
+                }
             }
             return true;
         }
@@ -653,15 +663,20 @@ namespace DataConvert {
         private void hideWindowTick(object sender, EventArgs e) {
             System.Drawing.Point pp = new Point(Cursor.Position.X, Cursor.Position.Y);//获取鼠标在屏幕的坐标点
             Rectangle rects = new Rectangle(this.Left, this.Top, this.Left + this.Width, this.Top + this.Height);//存储当前窗体在屏幕的所在区域 
-            if (this.Top < 0 && Win32API.PtInRect(ref rects, pp)) {//当鼠标在当前窗体内，并且窗体的Top属性小于0 
-                this.Top = 0;//设置窗体的Top属性为0 ,窗口显示出来并且置顶
-                //this.Activate();
-                this.TopMost = true;
+            if (this.Top < 0) {//当鼠标在当前窗体内，并且窗体的Top属性小于0 
+                if (Win32API.PtInRect(ref rects, pp)) {
+                    this.Top = 0;//设置窗体的Top属性为0 ,窗口显示出来并且置顶
+                    //this.Activate();
+                    this.TopMost = true;
+                }
             } else {
-                if (this.Top > -5 && this.Top < 5 && !(Win32API.PtInRect(ref rects, pp))) {
-                    this.Top = 5 - this.Height;//将QQ窗体隐藏到屏幕的顶端 
+                if (this.Top < 5) {
+                    if (!(Win32API.PtInRect(ref rects, pp))) {
+                        this.Top = 5 - this.Height;//将QQ窗体隐藏到屏幕的顶端 
+                    } else {
+                        this.TopMost = false;
+                    }
                 } else {
-                    this.TopMost = false;
                 }
             }
         }
