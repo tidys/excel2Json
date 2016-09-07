@@ -135,9 +135,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(10, 9);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(101, 12);
+            this.label3.Size = new System.Drawing.Size(215, 12);
             this.label3.TabIndex = 9;
-            this.label3.Text = "Alt+Q键 快捷下载";
+            this.label3.Text = "Alt+Q键 快捷下载 Alt+A 打开下载目录";
             // 
             // notifyIcon1
             // 

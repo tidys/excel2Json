@@ -59,10 +59,12 @@ namespace DataConvert {
             //辅助键说明: None = 0,   Alt = 1,  crtl= 2,  Shift = 4,   Windows = 8
             //如果有多个辅助键则,例如 alt+crtl是3 直接相加就可以了
             RegisterHotKey(this.Handle, 123, 1, Keys.Q);
+            RegisterHotKey(this.Handle, 124, 1, Keys.A);
         }
 
         private void DownLoadImg_FormClosed(object sender, FormClosedEventArgs e) {
             UnregisterHotKey(this.Handle, 123);
+            UnregisterHotKey(this.Handle, 124);
             DownLoadImg.isShow = false;
             DownLoadImg.instance = null;
         }
@@ -70,15 +72,21 @@ namespace DataConvert {
         protected override void WndProc(ref Message m) {
             switch (m.Msg) {
                 case 0x0312:  //这个是window消息定义的注册的热键消息  
-                    if (m.WParam.ToString() == "123")   // 按下CTRL+Q隐藏  
-                    {
-                        this.isPressHotKey = true;
-                        // 将剪切板的内容复制出来
-                        this.imgUrlTextBox_Enter(null, null);
-                        // 下载
-                        this.downBtn_Click(null, null);
-                        this.isPressHotKey = false;
-                    }
+                    this.isPressHotKey = true;
+                    switch (m.WParam.ToInt32()) {// 按下CTRL+Q
+                        case 123: {
+                                // 将剪切板的内容复制出来
+                                this.imgUrlTextBox_Enter(null, null);
+                                // 下载
+                                this.downBtn_Click(null, null);
+                                break;
+                            }
+                        case 124: {
+                                this.openLocalDirBtn_Click(null, null);
+                                break;
+                            }
+                    }                    
+                    this.isPressHotKey = false;
                     break;
             }
             base.WndProc(ref m);
