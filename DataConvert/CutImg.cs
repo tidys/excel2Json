@@ -239,12 +239,6 @@ namespace DataConvert {
         // 点击进度条的X
         private void cleanProcessBtnClick(object sender, EventArgs e) {
             this.progressBar1.Value = 0;
-            if (doProcess != null) {
-                try {
-                    doProcess.Abort();
-                } catch {
-                }
-            }
         }
 
         // 拖动文件到控件上
