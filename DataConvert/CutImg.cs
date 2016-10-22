@@ -268,13 +268,14 @@ namespace DataConvert {
                 this.imagePath = path;
 
                 System.Drawing.Image image = new System.Drawing.Bitmap(this.imagePath);
-                txbWidth.Text = image.Width.ToString();
-                txbHeight.Text = image.Height.ToString();
+                if (txbWidth.Text.Equals("0")) {
+                    txbWidth.Text = image.Width.ToString();
+                }
+                if (txbHeight.Text.Equals("0")) {
+                    txbHeight.Text = image.Height.ToString();
+                }
 
-                // 设置保存地址
-                int beganPos = path.LastIndexOf("\\");
-                string filePath = path.Substring(0, beganPos);
-                txtOutPut.Text = filePath;
+
 
                 // 文件名
                 string[] splitArr = this.imagePath.Split('\\');
@@ -285,6 +286,15 @@ namespace DataConvert {
                 this.formatName = name;
 
                 this.txbWidth.Focus();
+
+                // 设置保存地址
+                // 
+                string[] tmpArr = this.imagePath.Split('.');
+                string filePath = tmpArr[0];
+                // 文件所在的路径
+                //int beganPos = path.LastIndexOf("\\");
+                //string filePath = path.Substring(0, beganPos);
+                txtOutPut.Text = filePath;
 
             }
         }

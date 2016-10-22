@@ -168,7 +168,7 @@
             this.txbWidth.Name = "txbWidth";
             this.txbWidth.Size = new System.Drawing.Size(130, 21);
             this.txbWidth.TabIndex = 8;
-            this.txbWidth.Text = "100";
+            this.txbWidth.Text = "0";
             // 
             // txbHeight
             // 
@@ -176,7 +176,7 @@
             this.txbHeight.Name = "txbHeight";
             this.txbHeight.Size = new System.Drawing.Size(130, 21);
             this.txbHeight.TabIndex = 4;
-            this.txbHeight.Text = "100";
+            this.txbHeight.Text = "0";
             // 
             // logListView
             // 
