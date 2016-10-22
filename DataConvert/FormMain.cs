@@ -496,6 +496,17 @@ namespace DataConvert {
                         DownLoadImg.instance.Activate();
                     }
                 }
+            }else if(keyData == Keys.F2){
+
+                if (CutImg.isShow == false) {
+                    this.Top = 0;
+                    Form win = new CutImg();
+                    win.Show();
+                } else {
+                    if (CutImg.instance != null) {
+                        CutImg.instance.Activate();
+                    }
+                }
             }
             return true;
         }

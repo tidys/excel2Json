@@ -369,6 +369,7 @@
             this.listViewLog.GridLines = true;
             this.listViewLog.Location = new System.Drawing.Point(3, 17);
             this.listViewLog.Name = "listViewLog";
+            this.listViewLog.Scrollable = false;
             this.listViewLog.Size = new System.Drawing.Size(873, 139);
             this.listViewLog.TabIndex = 0;
             this.listViewLog.UseCompatibleStateImageBehavior = false;
