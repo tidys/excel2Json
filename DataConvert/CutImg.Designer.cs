@@ -263,6 +263,7 @@
             this.Name = "CutImg";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "CutImg";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CutImg_FormClosed);
             this.Load += new System.EventHandler(this.CutImg_Load);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);

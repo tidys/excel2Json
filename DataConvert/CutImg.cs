@@ -20,10 +20,12 @@ namespace DataConvert {
         public static CutImg instance = null;
         public CutImg() {
             InitializeComponent();
+            CutImg.instance = this;
+            CutImg.isShow = true;
         }
         public void addLog(string log) {
 
-            ListViewItem lvi = this.logListView.Items.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            ListViewItem lvi = CutImg.instance.logListView.Items.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             lvi.SubItems.Add(log);
 
             // 自动显示最下边的日志
@@ -77,6 +79,13 @@ namespace DataConvert {
                     }
 
                     float finished = i * cutColumn + j;
+
+                    bool isExists = Directory.Exists(outPutPath);
+                    if (!isExists) {
+                        Directory.CreateDirectory(outPutPath);
+                        //CutImg.instance.addLog("[创建文件夹] " + outPutPath);
+                    }
+
                     string strDestFile = outPutPath + "\\" + this.formatName + "_" + finished + type;
                     newImage.Save(strDestFile);
 
@@ -307,6 +316,10 @@ namespace DataConvert {
 
         private void label2_Click(object sender, EventArgs e) {
 
+        }
+
+        private void CutImg_FormClosed(object sender, FormClosedEventArgs e) {
+            CutImg.isShow = false;
         }
 
     }
