@@ -1,7 +1,7 @@
-#excel2Json
-excel 转换 Json 工具 
-[exe 下载地址: ]
-##工具介绍
+# excel2Json 
+excel 转换 Json 工具  
+
+## 工具介绍
 采用c#编写开发, 将excel表格的数据转换成json格式,方便程序使用.		
 
 ## 工具特点
@@ -95,7 +95,7 @@ desc:对该工作薄的一个简单描述说明,程序不会使用,可作为注�
 如果你喜欢,请告诉你的小伙伴,		
 如果不喜欢,请告诉我哪里不好(企鹅 774177933),或者直接在Issues里面提问,帮助我完善它		
 
-QQ打赏:				
+### QQ打赏:		 			
 ![enter image description here](http://7xq9nm.com1.z0.glb.clouddn.com/qqPay.png)
 
 
