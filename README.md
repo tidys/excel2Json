@@ -94,6 +94,10 @@ desc:对该工作薄的一个简单描述说明,程序不会使用,可作为注�
 该工具是自己游戏开发生涯中的一个小积累			
 如果你喜欢,请告诉你的小伙伴,		
 如果不喜欢,请告诉我哪里不好(企鹅 774177933),或者直接在Issues里面提问,帮助我完善它		
+### QQ群 
+CocosCreator插件开发交流: 224756137
+![群图片](http://7xq9nm.com1.z0.glb.clouddn.com/%E6%8F%92%E4%BB%B6%E4%BA%A4%E6%B5%81%E7%BE%A4.png)
+点击链接加入群【CocosCreator插件开发交流】：https://jq.qq.com/?_wv=1027&k=5ANhoTC
 
 ### QQ打赏:		 			
 ![enter image description here](http://7xq9nm.com1.z0.glb.clouddn.com/qqPay.png)
